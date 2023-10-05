@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
-const User = require("../models/users");
 const Pwitt = require("../models/pwitts");
+const Hashtag = require("../models/hashtags");
 
 // POST ONE PWITT
 
@@ -51,13 +51,19 @@ router.get("/", (req, res) => {
 
 // GET PWITT BY #
 
-router.get("/:hashtag", (req, res) => {
+router.get("/byHashtag/:hashtag", (req, res) => {
   const hashtag = req.params.hashtag;
-  const regex = new RegExp(`\\b#${hashtag}\\b`, "g");
 
-  Pwitt.find({ pwittContent: regex })
-    .then((data) => res.json(data))
-    .catch((error) => res.json({ result: false, error }));
+  Hashtag.findOne({ hashtag })
+    .populate('pwitts')
+    .then(hashtagObj => {
+      if (hashtagObj) {
+        return res.json({ result: true, pwitts: hashtagObj.pwitts });
+      } else {
+        return res.status(400).json({ result: false, error: "No hashtag found" });
+      }
+    })
+    .catch(error => res.status(400).json({ result: false, error }));
 });
 
 module.exports = router;

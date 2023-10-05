@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
         // Create the hashtag with the pwitt in pwitts list
         const newHashtagObj = new Hashtag({
             hashtag,
-            pwittsList: [pwittId],
+            pwitts: [pwittId],
         });
 
         newHashtagObj.save()
