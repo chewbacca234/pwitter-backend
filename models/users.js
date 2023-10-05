@@ -4,7 +4,7 @@ var userSchema = new mongoose.Schema({
     firstname: {
         type: String,
         required: true,
-        unique: true,
+        unique: false,
     },
     username: {
         type: String,
@@ -14,16 +14,20 @@ var userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+        unique: false,
     },
     picture: {
         type: String,
         default: 'user_default.png',
+        required: false,
+        unique: false,
     },
     token: {
         type: String,
         required: true,
         unique: true,
     },
+    likedList: [String],
 });
 
 //Export the model
