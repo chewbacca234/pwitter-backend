@@ -102,10 +102,10 @@ router.post('/removeLike', (req, res) => {
     .then(data => {
       if (data.modifiedCount) {
         // Pwitt removed in like list
-        return res.json({ result: true, pwittLiked: pwittId });
+        return res.json({ result: true, pwittUnliked: pwittId });
       } else {
         // Pwitt not removed in like list
-        return res.status(400).json({ result: false, error: 'Pwitt not liked' });
+        return res.status(400).json({ result: false, error: 'Pwitt not unliked' });
       }
     })
     // Update error
