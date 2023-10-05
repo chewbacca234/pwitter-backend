@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const pwittSchema = mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" },
   pwittDate: Date,
   pwittContent: String,
 });
