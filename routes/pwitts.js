@@ -43,10 +43,21 @@ router.delete("/", (req, res) => {
 
 // GET ALL PWITTS
 
-router.get("/allpwitts");
+router.get("/", (req, res) => {
+  Pwitt.find()
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ result: false, error }));
+});
 
 // GET PWITT BY #
 
-// GET PWITT BY LIKE
+router.get("/:hashtag", (req, res) => {
+  const hashtag = req.params.hashtag;
+  const regex = new RegExp(`\\b#${hashtag}\\b`, "g");
+
+  Pwitt.find({ pwittContent: regex })
+    .then((data) => res.json(data))
+    .catch((error) => res.json({ result: false, error }));
+});
 
 module.exports = router;
