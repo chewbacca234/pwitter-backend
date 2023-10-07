@@ -83,7 +83,16 @@ router.post("/signin", (req, res) => {
   User.findOne({ username: req.body.username }).then((user) => {
     if (user && bcrypt.compareSync(req.body.password, user.password)) {
       // Signin user and return user's token
-      return res.json({ result: true, token: user.token });
+      return res.json({
+        result: true,
+        userInfo: {
+          token: user.token,
+          firstname: user.firstname,
+          username: user.username,
+          picture: user.picture,
+          likedList: user.likedList,
+        }
+      });
     } else {
       // Error message if not found
       return res
