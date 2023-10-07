@@ -18,7 +18,7 @@ var userSchema = new mongoose.Schema({
     },
     picture: {
         type: String,
-        default: 'user_default.png',
+        default: '/images/user_default.png',
         required: false,
         unique: false,
     },
