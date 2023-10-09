@@ -2,24 +2,33 @@ var express = require("express");
 var router = express.Router();
 
 const Pwitt = require("../models/pwitts");
+const User = require('../models/users');
 const Hashtag = require("../models/hashtags");
 
 // POST ONE PWITT
 
 router.post("/", (req, res) => {
-  const userId = req.body.userId;
+  const { token, pwittContent } = req.body;
   const pwittDate = new Date();
-  const pwittContent = req.body.pwittContent;
 
-  const newPwitt = new Pwitt({
-    userId,
-    pwittDate,
-    pwittContent,
-  });
-  newPwitt
-    .save()
-    .then((data) => res.json({ result: true }))
-    .catch((error) => res.json({ result: false, error }));
+  console.log('req.body', req.body)
+
+  User.find({ token })
+    .then(user => {
+      if (user) {
+        const newPwitt = new Pwitt({
+          author: user._id,
+          pwittDate,
+          pwittContent,
+        });
+        newPwitt
+          .save()
+          .then((data) => res.json({ result: true }))
+          .catch((error) => res.json({ result: false, error }));
+      } else {
+        return res.json({ result: false, error: 'User not found.' })
+      }
+    });
 });
 
 // DELETE ONE PWITT
@@ -45,7 +54,8 @@ router.delete("/", (req, res) => {
 
 router.get("/", (req, res) => {
   Pwitt.find()
-    .then((data) => res.json(data))
+    .populate('author')
+    .then((pwitts) => res.json(pwitts))
     .catch((error) => res.json({ result: false, error }));
 });
 
